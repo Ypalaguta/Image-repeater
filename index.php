@@ -24,7 +24,11 @@
 <div id="clearState" title="Clear state" onclick="clearState()">&nbsp;</div>
 </header>
 
-<main id="programWindow"></main>
+<main id="programWindow">
+    <canvas id="mainCanvas"  width="" height="">
+
+    </canvas>
+</main>
 
 </body>
 </html>

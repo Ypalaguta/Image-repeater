@@ -18,9 +18,11 @@ var userProp={
     pausedState:false,
     mainInterval:0,
     mode:0,
+    iImg:null,
+    context:null,
 };
 var imageProp={
-    imagePath:'/img/default.png',
+    imagePath:'/img/default.jpg',
     width:0,
     height:0,
 };
@@ -67,6 +69,8 @@ $(function(){
 function resizeMainWindow(){
     programWindow.style.height=userProp.height-5-10+'px';
     nav.style.marginLeft=userProp.width-200-20+'px';
+    $(mainCanvas).attr({'width':(userProp.width-10),
+        'height':(userProp.height-10)});
 }
 
 function placeBlock() {
@@ -74,47 +78,55 @@ function placeBlock() {
         if (document.getElementsByClassName('current')[0])
             $('.current').removeClass('current').draggable('disable');
 
-        var iImg = document.createElement('img');
+        userProp.iImg = document.createElement('img');
         // iDiv.id = 'block';
-        iImg.className = 'repeatedBlock_' + userProp.beginTimes + ' current';
-        iImg.src = imageProp.imagePath;
-        document.getElementById('programWindow').appendChild(iImg);
-        $(iImg).draggable();
+        userProp.iImg.className = 'repeatedBlock_' + userProp.beginTimes + ' current';
+        userProp.iImg.src = imageProp.imagePath;
+        $('#programWindow').prepend(userProp.iImg);
+        $(userProp.iImg).draggable();
         userProp.beginTimes++;
-        triggerBegin.style.display = 'none';
-        triggerPause.style.display = 'block';
+        userProp.context=$('#mainCanvas')[0].getContext('2d');
     }
     else {
-        triggerBegin.style.display = 'none';
-        triggerPause.style.display = 'block';
         $('.current').draggable('enable');
         userProp.pausedState=false;
     }
+    $(triggerBegin).css('display','none');
+    $(triggerPause).css('display','block');
     userProp.mainInterval=setInterval(saveState,userProp.stateInterval);
 }
 
 function clearState(){
     userProp.pausedState=false;
-    $('#programWindow').empty();
-    triggerBegin.style.display='block';
-    triggerPause.style.display='none';
+    //$('#programWindow').empty();
+    $(triggerBegin).css('display','block');
+    $(triggerPause).css('display','none');
     clearInterval(userProp.mainInterval);
 }
 
 function pauseState(){
-    triggerBegin.style.display='block';
-    triggerPause.style.display='none';
+    $(triggerBegin).css('display','block');
+    $(triggerPause).css('display','none');
     //$('.current').draggable('disable');
     userProp.pausedState=true;
     clearInterval(userProp.mainInterval);
 }
 function saveState(){
-    if((document.getElementsByClassName('current')[0].style.left!=programWindow.getElementsByTagName('img')[programWindow.getElementsByTagName('img').length-1].style.left&&
-    document.getElementsByClassName('current')[0].style.top!=programWindow.getElementsByTagName('img')[programWindow.getElementsByTagName('img').length-1].style.top)||
-    document.getElementsByTagName('img').length==1){
-    var cln = document.getElementsByClassName('current')[0].cloneNode(true);
-    document.getElementById('programWindow').appendChild(cln);
-    $(cln).removeClass('current');
+   // userProp.context.drawImage(userProp.Iimg,$(userProp.iImg).css('margin-top'), $(userProp.iImg).css('margin-left'));
+   var base_image = new Image();
+    base_image.src = imageProp.imagePath;
+    base_image.onload = function() {
+        userProp.context.drawImage(base_image,
+            0,
+            0,
+            404,
+            198,
+            getNumberFromPx($(userProp.iImg).css('left')),
+            getNumberFromPx($(userProp.iImg).css('top')),
+            404,
+            198
+        )
+
     }
 }
 
@@ -123,10 +135,10 @@ function showSettings(){
         setSettings();
         if($('#triggerPause').css('display')=='block')
         pauseState();
-        modalSettings.style.display='block';
+        $(modalSettings).css('display','block');
     }
     else
-        modalSettings.style.display='none';
+        $(modalSettings).css('display','none');
 }
 
 function highlightBlock(){
@@ -138,4 +150,8 @@ function highlightBlock(){
         $('.current').css('transition','none');
     },1000);
     }
+}
+
+function getNumberFromPx(value){
+    return +value.replace(/[^0-9]/g,'');
 }
