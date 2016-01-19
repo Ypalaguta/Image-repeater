@@ -4,11 +4,13 @@
     <meta charset="UTF-8">
     <title>XP bug emulator</title>
     <link href="css/main.css" rel="stylesheet" type="text/css"/>
+    <link href="css/modal.css" rel="stylesheet" type="text/css"/>
     <link href="css/jquery.ui.slider.css" rel="stylesheet" type="text/css"/>
 
     <script src="js/jquery-2.2.0.min.js" type="text/javascript"> </script>
     <script src="js/jquery-ui-1.9.2.custom.min.js" type="text/javascript"> </script>
     <script src="js/main.js" type="text/javascript"> </script>
+    <script src="js/modal.js" type="text/javascript"> </script>
 </head>
 <body>
 
