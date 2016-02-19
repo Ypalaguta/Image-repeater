@@ -9,6 +9,9 @@
 
 //make modal scripts and css
 //removing invisible blocks
+//make it with canvas
+
+//oop style is old version of img repeater
 
 var userProp={
     height:0,
