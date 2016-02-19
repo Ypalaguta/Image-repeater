@@ -13,6 +13,7 @@
 
 //oop style is old version of img repeater
 
+//program configs
 var userProp={
     height:0,
     width:0,
