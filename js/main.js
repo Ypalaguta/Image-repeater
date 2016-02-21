@@ -5,7 +5,7 @@
 ///todo
 ///settings
 ///invisible-collector
-///coocie set save
+///cookie set save
 
 //make modal scripts and css
 //removing invisible blocks
@@ -98,7 +98,9 @@ function placeBlock() {
 
 function clearState(){
     userProp.pausedState=false;
-    //$('#programWindow').empty();
+   var canvas= $('#mainCanvas')[0].getContext('2d');
+    canvas.clearRect(0, 0, $('#mainCanvas')[0].width, $('#mainCanvas')[0].height);
+    $('img.current').remove();
     $(triggerBegin).css('display','block');
     $(triggerPause).css('display','none');
     clearInterval(userProp.mainInterval);
@@ -115,17 +117,26 @@ function saveState(){
    // userProp.context.drawImage(userProp.Iimg,$(userProp.iImg).css('margin-top'), $(userProp.iImg).css('margin-left'));
    var base_image = new Image();
     base_image.src = imageProp.imagePath;
+
+    //check position > 0
+    //if not calculate position
+    var left=parseInt($(userProp.iImg).css('left'));
+    var top=parseInt($(userProp.iImg).css('top'));
+
+     left=(left>0)?left:0;
+     top=(top>0)?top:0;
+
     base_image.onload = function() {
         userProp.context.drawImage(base_image,
             0,
             0,
             404,
             198,
-            getNumberFromPx($(userProp.iImg).css('left')),
-            getNumberFromPx($(userProp.iImg).css('top')),
+            left,
+            top,
             404,
             198
-        )
+        );
 
     }
 }
